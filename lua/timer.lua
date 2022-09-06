@@ -1,5 +1,5 @@
 -- main module file
-local module = require("plugin_name.module")
+local module = require("timer.module")
 
 local M = {}
 M.config = {
@@ -16,7 +16,7 @@ end
 
 -- "hello" is a public method for the plugin
 M.hello = function()
-  module.my_first_function()
+  print( module.my_first_function())
 end
 
 return M
