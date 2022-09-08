@@ -6,11 +6,11 @@ M.my_first_function = function()
 end
 
 -- create_popup_window_opts
-local function create_popup_window_opts(opts, sizes_only)
+local function create_popup_window_opts(opts, sizes_only, width, height)
   local win_height = vim.o.lines - vim.o.cmdheight - 2 -- Add margin for status and buffer line
   local win_width = vim.o.columns
-  local height = math.floor(win_height * 0.9)
-  local width = math.floor(win_width * 0.8)
+  --  local height = math.floor(win_height * 0.9)
+  --local width = math.floor(win_width * 0.8)
   local popup_layout = {
     height = height,
     width = width,
@@ -28,20 +28,78 @@ local function create_popup_window_opts(opts, sizes_only)
   return popup_layout
 end
 
--- create_new_window
+local text = [[
+                                                        
+                                    ■                   
+ ■■■■■■■■ ■                         ■                   
+    ■                               ■                   
+    ■     ■   ■■■■  ■■    ■■■■      ■ ■■■    ■■■   ■■■■ 
+    ■     ■   ■■  ■■  ■  ■■  ■      ■■  ■■  ■   ■  ■    
+    ■     ■   ■   ■   ■  ■   ■■     ■    ■      ■  ■    
+    ■     ■   ■   ■   ■  ■■■■■■     ■    ■  ■■■■■   ■■  
+    ■     ■   ■   ■   ■  ■          ■    ■  ■   ■     ■ 
+    ■     ■   ■   ■   ■  ■■         ■    ■  ■  ■■  ■  ■ 
+    ■     ■   ■   ■   ■   ■■■■      ■    ■  ■■■■■  ■■■■ 
+                                                        
+                                                        
+                                                        
+                                                        
+                                      ■■  ■■  ■■        
+                                      ■■  ■■  ■■        
+  ■■■■   ■■■■   ■■■■  ■■    ■■■■      ■■  ■■  ■■        
+ ■■  ■  ■■  ■■  ■■  ■■  ■  ■■  ■      ■■  ■■  ■■        
+ ■      ■    ■  ■   ■   ■  ■   ■■     ■   ■   ■         
+ ■      ■    ■  ■   ■   ■  ■■■■■■     ■   ■   ■         
+ ■      ■    ■  ■   ■   ■  ■          ■   ■   ■         
+ ■■  ■  ■■  ■■  ■   ■   ■  ■■                           
+  ■■■■   ■■■■   ■   ■   ■   ■■■■      ■■  ■■  ■■        
+]]
+
+local function MaxLength(lines)
+  local max = 0
+  for i, v in next, lines do
+    local l = utfstrlen(v)
+    if max < l then
+      max = l
+    end
+  end
+  return max
+end
+
+-- utfstrlen
+function utfstrlen(str)
+  local len = #str
+  local left = len
+  local cnt = 0
+  local arr = { 0, 0xc0, 0xe0, 0xf0, 0xf8, 0xfc }
+  while left ~= 0 do
+    local tmp = string.byte(str, -left)
+    local i = #arr
+    while arr[i] do
+      if tmp >= arr[i] then
+        left = left - i
+        break
+      end
+      i = i - 1
+    end
+    cnt = cnt + 1
+  end
+  return cnt
+end
+
+-- create_new_winow
 local function create_new_window(msg, opt)
+  local lines = vim.split(text, "\n")
+  local height = #lines + 2
+  print("-------------" .. height)
+  local width = MaxLength(lines) + 2
+  print("-------------" .. width)
   bufnr = vim.api.nvim_create_buf(false, true)
   win_id = vim.api.nvim_open_win(
     bufnr,
     true,
-    create_popup_window_opts({ desc = "Opens timer's UI window.", nargs = 0 }, false)
+    create_popup_window_opts({ desc = "Opens timer's UI window.", nargs = 0 }, false, width, height)
   )
-  local lines = { "hoge", "yoge", msg }
-  if string.len(opt) > 0 then
-    lines[#lines + 1] = opt
-  end
-  lines[#lines + 1] = "add"
-
   vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
 end
 
@@ -51,6 +109,9 @@ local function GetInterval(val)
     return 500
   end
   local num = tonumber(val)
+  if num == nil then
+    return 500
+  end
   return num
 end
 
