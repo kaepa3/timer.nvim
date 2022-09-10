@@ -7,10 +7,8 @@ end
 
 -- create_popup_window_opts
 local function create_popup_window_opts(opts, sizes_only, width, height)
-  local win_height = vim.o.lines - vim.o.cmdheight - 2 -- Add margin for status and buffer line
+  local win_height = vim.o.lines - vim.o.cmdheight - 2
   local win_width = vim.o.columns
-  --  local height = math.floor(win_height * 0.9)
-  --local width = math.floor(win_width * 0.8)
   local popup_layout = {
     height = height,
     width = width,
@@ -91,9 +89,7 @@ end
 local function create_new_window(msg, opt)
   local lines = vim.split(text, "\n")
   local height = #lines + 2
-  print("-------------" .. height)
   local width = MaxLength(lines) + 2
-  print("-------------" .. width)
   bufnr = vim.api.nvim_create_buf(false, true)
   win_id = vim.api.nvim_open_win(
     bufnr,
