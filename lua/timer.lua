@@ -20,4 +20,8 @@ M.hello = function(opt)
   module.Run(msg, opt.args)
 end
 
+M.hoge = function(opt)
+  return "hello world!"
+end
+
 return M
