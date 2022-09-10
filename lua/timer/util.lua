@@ -1,3 +1,3 @@
 function GetTimeFromStringTime(timeStr)
- print( timeStr:gmatch("(%d)(%S)"))
+  print(timeStr:gmatch("(%d)(%S)"))
 end
