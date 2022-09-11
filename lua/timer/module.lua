@@ -1,3 +1,4 @@
+local util = require("timer.util")
 -- module represents a lua module for the plugin
 local M = {}
 
@@ -112,7 +113,7 @@ local function GetInterval(val)
 end
 
 M.Run = function(msg, opt)
-  local interval = GetInterval(opt)
+  local interval = GetTimeFromStringTime(opt)
   vim.defer_fn(function()
     create_new_window(msg, opt)
   end, interval)
