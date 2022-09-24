@@ -1,5 +1,7 @@
 # timer.nvim
 
+![logo](./logo.png "サンプル")
+
 ## install
 
 in packer
@@ -21,8 +23,9 @@ or
 ```
 :TimerSet [num][Sub]
 ```
-Sub is 
 
-* m = min
-* s = second 
-* h = hour
+Sub is
+
+- m = min
+- s = second
+- h = hour
